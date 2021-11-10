@@ -1,9 +1,7 @@
 import numpy as np
-import matplotlib
 from matplotlib import pyplot as plt
-from matplotlib.animation import FuncAnimation
 
-N = 36
+N = 400
 sigma = 1
 epsilon = 1
 m = 1
@@ -16,7 +14,6 @@ velocity_factor = 20
 t0 = sigma / v0
 timestep_factor = 0.00005
 timestep = t0 * timestep_factor
-fps = 1000
 
 position_M_array = np.zeros([1, 2, number_of_timesteps])
 position_M_array[:, :, 0] = np.array([L / 2, L / 2])
@@ -119,14 +116,18 @@ for i in range(number_of_timesteps - 1):
 disc_plot = np.linspace(0, 2 * np.pi, 1000)
 
 plt.figure(1)
-plt.fill(np.cos(disc_plot) * rho + position_M_array[0, 0, 0], np.sin(disc_plot) * rho + position_M_array[0, 1, 0],
-         alpha=0.4, c='C0')
-plt.plot(np.cos(disc_plot) * rho + position_M_array[0, 0, 0], np.sin(disc_plot) * rho + position_M_array[0, 1, 0], 'k',
-         linewidth='0.8')
-plt.scatter(position_m_array[:, 0, 0], position_m_array[:, 1, 0], s=14, c='brown', edgecolor='k', linewidth=0.5)
+chosen_time_slice = -1
+plt.fill(np.cos(disc_plot) * rho + position_M_array[0, 0, chosen_time_slice], np.sin(disc_plot) * rho +
+         position_M_array[0, 1, chosen_time_slice], alpha=0.4, c='C0')
+plt.plot(np.cos(disc_plot) * rho + position_M_array[0, 0, -1], np.sin(disc_plot) * rho +
+         position_M_array[0, 1, chosen_time_slice], 'k', linewidth='0.8')
+plt.scatter(position_m_array[:, 0, chosen_time_slice], position_m_array[:, 1, chosen_time_slice],
+            s=14, c='brown', edgecolor='k', linewidth=0.5)
+
 plt.plot(position_M_array[0, 0, :], position_M_array[0, 1, :], 'k')
 plt.plot(position_M_array[0, 0, -1], position_M_array[0, 1, -1], 'or', markersize=2)
 plt.plot(position_M_array[0, 0, 0], position_M_array[0, 1, 0], 'og', markersize=2)
+
 plt.xlabel('x')
 plt.ylabel('y')
 plt.xlim([0, L])
