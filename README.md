@@ -1,1 +1,3 @@
-# brownian_motion_2D_disc
+Work in progress - Brownian motion.
+Smaller particles colliding with a disc of radius rho.
+No interaction between smaller particles for computational efficiency.
