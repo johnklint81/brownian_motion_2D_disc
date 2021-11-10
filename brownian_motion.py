@@ -91,14 +91,18 @@ def step(_position_m_list, _velocity_m_list, _position_M, _velocity_M, _rho, _N,
     _position_m_list += _velocity_m_list * _timestep / 2
     _position_m_list, _velocity_m_list = outside_box(_position_m_list, _velocity_m_list, _L, _N)
     _position_M += _velocity_M * _timestep
+    _position_M, _velocity_M = outside_box(_position_M, _velocity_M, _L, 1)
+
     for i in range(_N):
         _force_m, _force_M_list[i] = get_force(_position_m_list[i], _position_M, _rho)
         _velocity_m_list[i, :] += _force_m / _m * _timestep
     _force_M = np.sum(_force_M_list, axis=0)
     _velocity_M += _force_M / _M * _timestep
+
     _position_m_list += _velocity_m_list * _timestep / 2
     _position_m_list, _velocity_m_list = outside_box(_position_m_list, _velocity_m_list, _L, _N)
     _position_M += _velocity_M * _timestep
+    _position_M, _velocity_M = outside_box(_position_M, _velocity_M, _L, 1)
     return _position_m_list, _velocity_m_list, _position_M, _velocity_M
 
 
@@ -121,23 +125,15 @@ plt.plot(np.cos(disc_plot) * rho + position_M_array[0, 0, 0], np.sin(disc_plot) 
          linewidth='0.8')
 plt.scatter(position_m_array[:, 0, 0], position_m_array[:, 1, 0], s=14, c='brown', edgecolor='k', linewidth=0.5)
 plt.plot(position_M_array[0, 0, :], position_M_array[0, 1, :], 'k')
+plt.plot(position_M_array[0, 0, -1], position_M_array[0, 1, -1], 'or', markersize=2)
+plt.plot(position_M_array[0, 0, 0], position_M_array[0, 1, 0], 'og', markersize=2)
 plt.xlabel('x')
 plt.ylabel('y')
 plt.xlim([0, L])
 plt.ylim([0, L])
 plt.axis('square')
 
-plt.figure(2)
-plt.fill(np.cos(disc_plot) * rho + position_M_array[0, 0, -1], np.sin(disc_plot) * rho + position_M_array[0, 1, -1],
-         alpha=0.4, c='C0')
-plt.plot(np.cos(disc_plot) * rho + position_M_array[0, 0, -1], np.sin(disc_plot) * rho + position_M_array[0, 1, -1], 'k',
-         linewidth='0.8')
-plt.scatter(position_m_array[:, 0, -1], position_m_array[:, 1, -1], s=14, c='red', edgecolor='k', linewidth=0.5)
-plt.plot(position_M_array[0, 0, :], position_M_array[0, 1, :], 'k')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.xlim([0, L])
-plt.ylim([0, L])
-plt.axis('square')
+position_M_array = np.squeeze(position_M_array, axis=0)
+np.savetxt('MSE.csv', position_M_array, fmt='%.4f', delimiter=',')
 
 plt.show()
