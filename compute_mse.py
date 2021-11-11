@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-data = np.genfromtxt('MSE2.csv', delimiter=',')
+data = np.genfromtxt('MSE.csv', delimiter=',')
 data = data.T
 t0 = 0.00005
 

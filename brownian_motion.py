@@ -8,7 +8,7 @@ m = 1
 M = 40 * m
 L = 100 * sigma
 rho = 10 * sigma
-number_of_timesteps = 100000
+number_of_timesteps = 300000
 v0 = np.sqrt(2 * epsilon / m)
 velocity_factor = 20
 t0 = sigma / v0
@@ -87,7 +87,7 @@ def step(_position_m_list, _velocity_m_list, _position_M, _velocity_M, _rho, _N,
 
     _position_m_list += _velocity_m_list * _timestep / 2
     _position_m_list, _velocity_m_list = outside_box(_position_m_list, _velocity_m_list, _L, _N)
-    _position_M += _velocity_M * _timestep
+    _position_M += _velocity_M * _timestep / 2
     _position_M, _velocity_M = outside_box(_position_M, _velocity_M, _L, 1)
 
     for i in range(_N):
@@ -98,7 +98,7 @@ def step(_position_m_list, _velocity_m_list, _position_M, _velocity_M, _rho, _N,
 
     _position_m_list += _velocity_m_list * _timestep / 2
     _position_m_list, _velocity_m_list = outside_box(_position_m_list, _velocity_m_list, _L, _N)
-    _position_M += _velocity_M * _timestep
+    _position_M += _velocity_M * _timestep / 2
     _position_M, _velocity_M = outside_box(_position_M, _velocity_M, _L, 1)
     return _position_m_list, _velocity_m_list, _position_M, _velocity_M
 
